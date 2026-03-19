@@ -19,26 +19,25 @@
             height: 100vh; 
             height: 100dvh; 
         }
-        
+
         .clinic-logo {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            width: clamp(60px, 12vw, 100px);
+            top: 10px;
+            left: 10px;
+            width: 80px;
             z-index: 1000;
-            border-radius: 10px;
         }
 
-        /* הכספת תמיד תהיה בפרופורציה הנכונה */
+        /* המכולה הראשית - שומרת על יחס גובה-רוחב קבוע */
         .vault-scene { 
             position: relative; 
-            width: 100%; 
-            max-width: 800px; /* מגביל את הרוחב במחשב */
-            height: 100%; 
-            max-height: 600px; /* מגביל את הגובה במחשב */
+            width: 100vw; 
+            height: 100vw; /* יוצר ריבוע מושלם במובייל */
+            max-width: 600px; 
+            max-height: 600px; 
             overflow: hidden; 
-            background: radial-gradient(circle, #16213e, #0f3460);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            background: #16213e;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
         .door { 
@@ -46,22 +45,20 @@
             top: 0;
             width: 50%; 
             height: 100%; 
-            background-size: contain; /* שומר על כל התמונה */
+            background-size: 100% 100%; /* מותח את התמונה בדיוק לגודל החצי */
             background-repeat: no-repeat;
-            transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1); 
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); 
             z-index: 10; 
         }
 
         .door-left { 
             left: 0; 
             background-image: url('כספתשמאל.png'); 
-            background-position: center right; 
         }
 
         .door-right { 
             right: 0; 
             background-image: url('כספתימין.png'); 
-            background-position: center left; 
         }
 
         .open .door-left { transform: translateX(-100%); }
@@ -69,20 +66,26 @@
 
         .game-area { 
             position: absolute; 
-            top: 0; left: 0;
             width: 100%; height: 100%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            z-index: 1; padding: 20px; box-sizing: border-box; 
+            z-index: 1; padding: 10px; box-sizing: border-box; 
+            background: radial-gradient(circle, #1a1a2e, #0f3460);
         }
 
         #action-btn, .start-btn { 
-            z-index: 80; padding: 15px 35px; font-size: clamp(16px, 4vw, 22px); 
+            z-index: 80; padding: 12px 25px; font-size: 18px; 
             background: var(--primary-red); color: white; border: none; 
             border-radius: 50px; cursor: pointer; font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         
-        #action-btn { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); }
+        #btn-container {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 90;
+        }
 
         #intro-screen {
             position: absolute;
@@ -92,23 +95,15 @@
             z-index: 2000; text-align: center; padding: 20px; box-sizing: border-box;
         }
 
-        .riddle-text { font-size: clamp(16px, 4.5vw, 22px); text-align: center; margin-bottom: 15px; font-weight: bold; }
-        .inputs-container { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center; }
-        .letter-input { width: clamp(25px, 7vw, 40px); height: clamp(35px, 10vw, 50px); font-size: clamp(18px, 5vw, 24px); text-align: center; border: 2px solid var(--success-green); border-radius: 6px; background: #1a1a2e; color: white; outline: none; }
-        .space-box { width: 10px; }
+        .riddle-text { font-size: 18px; text-align: center; margin-bottom: 10px; font-weight: bold; color: #fff; }
+        .inputs-container { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center; }
+        .letter-input { width: 30px; height: 40px; font-size: 20px; text-align: center; border: 2px solid var(--success-green); border-radius: 5px; background: #000; color: white; }
+        
+        .decoder-ring { display: none; grid-template-columns: repeat(4, 1fr); gap: 4px; background: rgba(0, 0, 0, 0.9); padding: 10px; border: 1px solid var(--success-green); width: 90%; max-height: 150px; overflow-y: auto; }
+        .decoder-item { font-size: 14px; color: #fff; text-align: center; padding: 2px; }
 
-        .decoder-ring { display: none; grid-template-columns: repeat(4, 1fr); gap: 4px; background: rgba(0, 0, 0, 0.85); padding: 10px; border-radius: 12px; border: 1px solid var(--success-green); width: 90%; margin-top: 10px; overflow-y: auto; max-height: 30vh; }
-        .decoder-item { font-size: clamp(12px, 3.2vw, 16px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 3px 0; text-align: center; }
-
-        .code-display { font-size: clamp(22px, 7vw, 36px); letter-spacing: 5px; margin: 10px 0; color: #fff; text-shadow: 0 0 10px var(--success-green); font-weight: bold; }
-        #final-prize { display: none; width: 100%; height: 100%; object-fit: contain; z-index: 100; }
-        #msg { color: var(--success-green); height: 20px; font-weight: bold; }
-
-        /* התאמה למובייל - ביטול הגבלת גובה */
-        @media (max-width: 600px) {
-            .vault-scene { height: 100vh; max-height: 100dvh; }
-            .door { background-size: 100% auto; background-position: center; }
-        }
+        #final-prize { display: none; width: 100%; height: 100%; object-fit: contain; }
+        #msg { color: var(--success-green); font-weight: bold; margin-top: 5px; min-height: 20px; }
     </style>
 </head>
 <body>
@@ -117,15 +112,15 @@
 
 <div id="intro-screen">
     <h1 style="color: var(--success-green);">ברוכים הבאים!</h1>
-    <p>עליכם לפתור את החידות על מנת לקבל את האפיקומן.</p>
+    <p>פתרו את החידות כדי למצוא את האפיקומן.</p>
     <button class="start-btn" onclick="closeIntro()">מתחילים!</button>
 </div>
 
 <div class="vault-scene" id="scene">
-    <div class="game-area" id="main-area">
-        <div id="riddle-display" style="display:none; width: 100%; flex-direction: column; align-items: center;">
+    <div class="game-area">
+        <div id="riddle-display" style="display:none; flex-direction: column; align-items: center; width: 100%;">
             <p class="riddle-text" id="riddle-q"></p>
-            <div id="secret-code" class="code-display" style="display:none;">😂🎮💚🎈😜🤓</div>
+            <div id="secret-code" style="display:none; font-size: 24px; margin: 10px;">😂🎮💚🎈😜🤓</div>
             <div class="inputs-container" id="inputs-wrapper"></div>
             <div id="decoder" class="decoder-ring">
                 <div class="decoder-item">א 😂</div><div class="decoder-item">ב 😱</div><div class="decoder-item">ג 👍</div><div class="decoder-item">ד 🔥</div><div class="decoder-item">ה 😍</div><div class="decoder-item">ו 😜</div>
@@ -135,27 +130,29 @@
             </div>
             <p id="msg"></p>
         </div>
-        <img src="אפיקומן.png" id="final-prize" alt="אפיקומן!">
+        <img src="אפיקומן.png" id="final-prize">
     </div>
 
     <div class="door door-left" id="d-left"></div>
     <div class="door door-right" id="d-right"></div>
     
-    <img src="מפתח.png" id="key-img" style="position: absolute; width: 100px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; display: none; cursor: pointer;" onclick="openFinalVault()">
-    <button id="action-btn" onclick="handleButtonClick()" style="display:none;">פתח את הכספת</button>
+    <img src="מפתח.png" id="key-img" style="position: absolute; width: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; display: none; cursor: pointer;" onclick="openFinalVault()">
+    
+    <div id="btn-container">
+        <button id="action-btn" onclick="handleButtonClick()" style="display:none;">פתח את הכספת</button>
+    </div>
 </div>
 
 <script>
     const stages = [
         { q: "בערב פסח, במרכז השולחן אני מונחת, יש עליי שישה מאכלים... מי אני?", a: ["קערת הסדר", "צלחת הסדר", "צלחת הפסח", "קערת הפסח"], nextL: "כספתשמאל.png", nextR: "כספתאדום.png" },
-        { q: "בכל ערב פסח, בכל בית ישראל מכינים לי כיסא, מוזגים לי כוס יין גדולה... מי אני?", a: ["אליהו הנביא"], nextL: "כספתשמאל.png", nextR: "כספתירוק.png" },
-        { q: "אוכלים אותי בפסח, אני שטוחה, דקה ויבשה, ויש לי המון חורים קטנים... מי אני?", a: ["מצה"], nextL: "כספתכחול.png", nextR: "כספתירוק.png" },
-        { q: "היינו עשרה סימנים של כוח... מי אנחנו?", a: ["עשר המכות"], nextL: "כספתכתום.png", nextR: "כספתירוק.png" }
+        { q: "בכל ערב פסח מכינים לי כיסא וכוס יין גדולה... מי אני?", a: ["אליהו הנביא"], nextL: "כספתשמאל.png", nextR: "כספתירוק.png" },
+        { q: "אני שטוחה, דקה ויבשה, ויש לי המון חורים... מי אני?", a: ["מצה"], nextL: "כספתכחול.png", nextR: "כספתירוק.png" },
+        { q: "דם, צפרדע, כינים... מי אנחנו?", a: ["עשר המכות"], nextL: "כספתכתום.png", nextR: "כספתירוק.png" }
     ];
 
     let currentStep = 0;
     let isVaultOpen = false;
-    let isCodeSolved = false;
 
     function closeIntro() { 
         document.getElementById('intro-screen').style.display = 'none'; 
@@ -163,7 +160,6 @@
     }
 
     function handleButtonClick() {
-        if (isCodeSolved) { showFinalPrize(); return; }
         if (!isVaultOpen) {
             document.getElementById('scene').classList.add('open');
             document.getElementById('action-btn').style.display = 'none';
@@ -183,59 +179,37 @@
         container.innerHTML = '';
         document.getElementById('msg').innerText = '';
 
-        const primaryAnswer = stageData.a[0];
-        primaryAnswer.split('').forEach((char) => {
+        stageData.a[0].split('').forEach((char) => {
             if (char === ' ') {
-                const space = document.createElement('div');
-                space.className = 'space-box';
-                container.appendChild(space);
+                const s = document.createElement('div'); s.style.width = '10px'; container.appendChild(s);
             } else {
                 const input = document.createElement('input');
                 input.className = 'letter-input';
                 input.maxLength = 1;
-                input.setAttribute('autocomplete', 'off');
-                input.addEventListener('input', (e) => {
-                    if (e.target.value) {
-                        const all = container.querySelectorAll('.letter-input');
-                        const next = [...all].find(i => [...container.children].indexOf(i) > [...container.children].indexOf(e.target));
-                        if (next) next.focus();
-                    }
-                    validateAnswer();
-                });
+                input.addEventListener('input', () => validateAnswer());
                 container.appendChild(input);
             }
         });
-        if(container.querySelector('input')) container.querySelector('input').focus();
     }
 
     function validateAnswer() {
         const inputs = document.querySelectorAll('.letter-input');
         const stageData = (currentStep < stages.length) ? stages[currentStep] : { a: ["אפיקומן"] };
-        const isCorrect = stageData.a.some(possibleAns => {
-            let userCombined = ""; let inputIdx = 0;
-            for(let char of possibleAns) {
-                if(char === ' ') userCombined += ' ';
-                else { userCombined += (inputs[inputIdx] ? inputs[inputIdx].value : ""); inputIdx++; }
-            }
-            return userCombined.trim() === possibleAns.trim();
-        });
+        const userAns = Array.from(inputs).map(i => i.value).join('');
+        
+        // בדיקה פשוטה להתאמה (בהתעלם מרווחים)
+        const isCorrect = stageData.a.some(a => a.replace(/\s/g, '') === userAns);
 
         if (isCorrect) {
+            document.getElementById('msg').innerText = "כל הכבוד!";
             const btn = document.getElementById('action-btn');
-            if (currentStep < stages.length) {
-                document.getElementById('msg').innerText = "נכון מאד!";
-                btn.innerText = "לשלב הבא";
-                btn.style.display = 'block';
-            } else {
-                isCodeSolved = true;
-                document.getElementById('msg').innerText = "פיצחתם את הקוד!";
-                btn.innerText = "לקבלת האפיקומן 🎁";
-                btn.style.display = 'block';
-            }
+            btn.style.display = 'block';
+            btn.innerText = (currentStep < stages.length) ? "לכספת הבאה" : "קבלו את האפיקומן!";
         }
     }
 
     function prepareNextLevel() {
+        if (currentStep >= stages.length) { showFinalPrize(); return; }
         const stage = stages[currentStep];
         document.getElementById('d-left').style.backgroundImage = `url('${stage.nextL}')`;
         document.getElementById('d-right').style.backgroundImage = `url('${stage.nextR}')`;
@@ -251,7 +225,7 @@
                 document.getElementById('action-btn').style.display = 'block';
             }
             isVaultOpen = false;
-        }, 1200);
+        }, 1000);
     }
 
     function openFinalVault() {
@@ -262,11 +236,9 @@
     }
 
     function showFinalPrize() {
-        document.getElementById('d-left').style.display = 'none';
-        document.getElementById('d-right').style.display = 'none';
+        document.getElementById('final-prize').style.display = 'block';
         document.getElementById('riddle-display').style.display = 'none';
         document.getElementById('action-btn').style.display = 'none';
-        document.getElementById('final-prize').style.display = 'block';
     }
 </script>
 </body>
