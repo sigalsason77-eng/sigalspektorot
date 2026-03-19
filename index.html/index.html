@@ -11,11 +11,11 @@
         
         .clinic-logo {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: clamp(70px, 12vw, 110px);
+            top: 15px;
+            left: 15px;
+            width: clamp(60px, 12vw, 100px);
             z-index: 1000;
-            border-radius: 12px;
+            border-radius: 10px;
             pointer-events: none;
         }
 
@@ -27,76 +27,70 @@
             overflow: hidden; 
             background: #16213e; 
         }
-        
-        #intro-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 10, 26, 0.95);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 2000; text-align: center; padding: 20px; box-sizing: border-box;
-        }
-        #intro-screen h1 { color: var(--success-green); font-size: clamp(24px, 6vw, 36px); margin-bottom: 20px; }
 
-        .game-area { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            background: radial-gradient(circle, #16213e, #0f3460); 
-            z-index: 1; 
-            padding: 15px; 
-            box-sizing: border-box; 
-        }
-
-        /* --- התיקון לתמונות הכספת --- */
         .door { 
             position: absolute; 
             width: 50%; 
             height: 100%; 
-            /* contain מבטיח שכל התמונה תיכנס בלי להיחתך */
-            background-size: contain; 
             background-repeat: no-repeat;
             transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1); 
             z-index: 10; 
         }
-        .door-left { 
-            left: 0; 
-            background-image: url('כספתשמאל.png'); 
-            background-position: right center; /* מצמיד את חצי הכספת למרכז */
+
+        /* הגדרות למחשב (מסך רחב) */
+        @media (min-width: 768px) {
+            .door { background-size: cover; }
+            .door-left { left: 0; background-image: url('כספתשמאל.png'); background-position: center right; }
+            .door-right { right: 0; background-image: url('כספתימין.png'); background-position: center left; }
         }
-        .door-right { 
-            right: 0; 
-            background-image: url('כספתימין.png'); 
-            background-position: left center; /* מצמיד את חצי הכספת למרכז */
+
+        /* הגדרות מיוחדות לטלפון (מסך צר) */
+        @media (max-width: 767px) {
+            .door { 
+                background-size: 100% auto; /* התמונה תתפרס על כל הרוחב ותתאים גובה אוטומטית */
+                background-position: center; 
+            }
+            .door-left { left: 0; background-image: url('כספתשמאל.png'); }
+            .door-right { right: 0; background-image: url('כספתימין.png'); }
         }
-        /* --------------------------- */
 
         .open .door-left { transform: translateX(-100%); }
         .open .door-right { transform: translateX(100%); }
-        
-        #key-img { position: absolute; width: clamp(80px, 20vw, 130px); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; cursor: pointer; display: none; filter: drop-shadow(0 0 15px gold); animation: float 2s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translate(-50%, -55%); } 50% { transform: translate(-50%, -45%); } }
+
+        /* שאר העיצוב ללא שינוי תוכן */
+        #intro-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 26, 0.98);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 2000; text-align: center; padding: 20px; box-sizing: border-box;
+        }
+
+        .game-area { 
+            position: absolute; 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: radial-gradient(circle, #16213e, #0f3460); z-index: 1; padding: 15px; box-sizing: border-box; 
+        }
 
         #action-btn, .start-btn { 
             z-index: 80; padding: 15px 35px; font-size: clamp(16px, 4vw, 22px); 
             background: var(--primary-red); color: white; border: none; 
-            border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border-radius: 50px; cursor: pointer; font-weight: bold;
         }
-        #action-btn { position: absolute; bottom: 10%; align-self: center; }
+        #action-btn { position: absolute; bottom: 12%; }
         
-        .riddle-text { font-size: clamp(16px, 4.5vw, 22px); padding: 0 15px; text-align: center; margin-bottom: 10px; font-weight: bold; }
-        .inputs-container { display: flex; gap: clamp(4px, 1.5vw, 8px); margin: 10px 0; flex-wrap: wrap; justify-content: center; }
-        .letter-input { width: clamp(28px, 8vw, 42px); height: clamp(38px, 12vw, 55px); font-size: clamp(18px, 6vw, 26px); text-align: center; border: 2px solid var(--success-green); border-radius: 8px; background: #1a1a2e; color: white; font-weight: bold; outline: none; }
-        .space-box { width: 15px; }
+        .riddle-text { font-size: clamp(16px, 4.5vw, 22px); text-align: center; margin-bottom: 10px; font-weight: bold; width: 90%; }
+        .inputs-container { display: flex; gap: 5px; margin: 10px 0; flex-wrap: wrap; justify-content: center; }
+        .letter-input { width: clamp(28px, 8vw, 40px); height: clamp(38px, 12vw, 50px); font-size: clamp(18px, 6vw, 24px); text-align: center; border: 2px solid var(--success-green); border-radius: 6px; background: #1a1a2e; color: white; outline: none; }
+        .space-box { width: 10px; }
 
-        .decoder-ring { display: none; grid-template-columns: repeat(4, 1fr); gap: 5px; background: rgba(0, 0, 0, 0.85); padding: 10px; border-radius: 12px; border: 2px solid var(--success-green); width: 95%; margin-top: 10px; overflow-y: auto; max-height: 35vh; }
-        .decoder-item { font-size: clamp(13px, 3.5vw, 18px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 4px 0; text-align: center; }
+        .decoder-ring { display: none; grid-template-columns: repeat(4, 1fr); gap: 4px; background: rgba(0, 0, 0, 0.85); padding: 10px; border-radius: 12px; border: 1px solid var(--success-green); width: 95%; margin-top: 10px; overflow-y: auto; max-height: 35vh; }
+        .decoder-item { font-size: clamp(12px, 3.5vw, 17px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0; text-align: center; }
 
-        .code-display { font-size: clamp(24px, 8vw, 40px); letter-spacing: 5px; margin: 10px 0; color: #fff; text-shadow: 0 0 10px var(--success-green); font-weight: bold; }
+        .code-display { font-size: clamp(24px, 8vw, 40px); letter-spacing: 5px; margin: 8px 0; color: #fff; text-shadow: 0 0 10px var(--success-green); font-weight: bold; }
         #final-prize { display: none; width: 100%; height: 100%; object-fit: contain; background: var(--dark-bg); position: absolute; top:0; left:0; z-index: 100; }
+        #msg { color: var(--success-green); height: 20px; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -104,157 +98,4 @@
 <img src="logo.jpg" class="clinic-logo" alt="לוגו" onerror="this.onerror=null; this.src='logo.png';">
 
 <div id="intro-screen">
-    <h1>ברוכים הבאים למשחק חפש את המטמון!</h1>
-    <p>עליכם לפתור את החידות על מנת לקבל את האפיקומן.<br><b>בהצלחה!</b></p>
-    <button class="start-btn" onclick="closeIntro()">מתחילים!</button>
-</div>
-
-<div class="vault-scene" id="scene">
-    <div class="game-area" id="main-area">
-        <div id="riddle-display" style="display:none; width: 100%; flex-direction: column; align-items: center;">
-            <p class="riddle-text" id="riddle-q"></p>
-            <div id="secret-code" class="code-display" style="display:none;">😂🎮💚🎈😜🤓</div>
-            <div class="inputs-container" id="inputs-wrapper"></div>
-            
-            <div id="decoder" class="decoder-ring">
-                <div class="decoder-item">א 😂</div><div class="decoder-item">ב 😱</div><div class="decoder-item">ג 👍</div><div class="decoder-item">ד 🔥</div><div class="decoder-item">ה 😍</div><div class="decoder-item">ו 😜</div>
-                <div class="decoder-item">ז 😊</div><div class="decoder-item">ח 👽</div><div class="decoder-item">ט 😎</div><div class="decoder-item">י 💚</div><div class="decoder-item">כ 🙏</div><div class="decoder-item">ל 😮</div>
-                <div class="decoder-item">מ 🤓</div><div class="decoder-item">נ 🐹</div><div class="decoder-item">ס 🙈</div><div class="decoder-item">ע 🍭</div><div class="decoder-item">פ 🎮</div><div class="decoder-item">צ 🚀</div>
-                <div class="decoder-item">ק 🎈</div><div class="decoder-item">ר 🏀</div><div class="decoder-item">ש 😇</div><div class="decoder-item">ת 🙉</div><div class="decoder-item">ם 👀</div><div class="decoder-item">ן 🥑</div>
-            </div>
-            <p id="msg" style="color: var(--success-green); margin-top: 10px; font-weight: bold; text-align: center; min-height: 20px;"></p>
-        </div>
-        <img src="אפיקומן.png" id="final-prize" alt="מצאתם את האפיקומן!">
-    </div>
-
-    <div class="door door-left" id="d-left"></div>
-    <div class="door door-right" id="d-right"></div>
-    
-    <img src="מפתח.png" id="key-img" onclick="openFinalVault()">
-    <button id="action-btn" onclick="handleButtonClick()">פתח את הכספת</button>
-</div>
-
-<script>
-    const stages = [
-        { q: "בערב פסח, במרכז השולחן אני מונחת, יש עליי שישה מאכלים... מי אני?", a: ["קערת הסדר", "צלחת הסדר", "צלחת הפסח", "קערת הפסח"], nextL: "כספתשמאל.png", nextR: "כספתאדום.png" },
-        { q: "בכל ערב פסח, בכל בית ישראל מכינים לי כיסא, מוזגים לי כוס יין גדולה... מי אני?", a: ["אליהו הנביא"], nextL: "כספתשמאל.png", nextR: "כספתירוק.png" },
-        { q: "אוכלים אותי בפסח, אני שטוחה, דקה ויבשה, ויש לי המון חורים קטנים... מי אני?", a: ["מצה"], nextL: "כספתכחול.png", nextR: "כספתירוק.png" },
-        { q: "היינו עשרה סימנים של כוח- דם, צפרדע, כינים, ערוב, דבר, שחין, ברד, ארבה, חשך ומכת בכורות- עד שעם ישראל יצא מעבדות ... מי אנחנו?", a: ["עשר המכות"], nextL: "כספתכתום.png", nextR: "כספתירוק.png" }
-    ];
-
-    let currentStep = 0;
-    let isVaultOpen = false;
-    let isCodeSolved = false;
-
-    function closeIntro() { document.getElementById('intro-screen').style.display = 'none'; }
-
-    function handleButtonClick() {
-        if (isCodeSolved) { showFinalPrize(); return; }
-        if (!isVaultOpen) {
-            document.getElementById('scene').classList.add('open');
-            document.getElementById('action-btn').style.display = 'none';
-            document.getElementById('riddle-display').style.display = 'flex';
-            isVaultOpen = true;
-            setupRiddle();
-        } else { prepareNextLevel(); }
-    }
-
-    function setupRiddle() {
-        const stageData = (currentStep < stages.length) ? stages[currentStep] : { q: "פיצחתם הכל! פתרו את כתב הסתרים:", a: ["אפיקומן"] };
-        document.getElementById('riddle-q').innerText = stageData.q;
-        document.getElementById('secret-code').style.display = (currentStep >= stages.length) ? 'block' : 'none';
-        document.getElementById('decoder').style.display = (currentStep >= stages.length) ? 'grid' : 'none';
-        
-        const container = document.getElementById('inputs-wrapper');
-        container.innerHTML = '';
-        document.getElementById('msg').innerText = '';
-
-        const primaryAnswer = stageData.a[0];
-        primaryAnswer.split('').forEach((char) => {
-            if (char === ' ') {
-                const space = document.createElement('div');
-                space.className = 'space-box';
-                container.appendChild(space);
-            } else {
-                const input = document.createElement('input');
-                input.className = 'letter-input';
-                input.maxLength = 1;
-                input.setAttribute('autocomplete', 'off');
-                input.addEventListener('input', (e) => {
-                    if (e.target.value) {
-                        const all = container.querySelectorAll('.letter-input');
-                        const next = [...all].find(i => [...container.children].indexOf(i) > [...container.children].indexOf(e.target));
-                        if (next) next.focus();
-                    }
-                    validateAnswer();
-                });
-                container.appendChild(input);
-            }
-        });
-        if(container.querySelector('input')) container.querySelector('input').focus();
-    }
-
-    function validateAnswer() {
-        const inputs = document.querySelectorAll('.letter-input');
-        const stageData = (currentStep < stages.length) ? stages[currentStep] : { a: ["אפיקומן"] };
-        const isCorrect = stageData.a.some(possibleAns => {
-            let userCombined = ""; let inputIdx = 0;
-            for(let char of possibleAns) {
-                if(char === ' ') userCombined += ' ';
-                else { userCombined += (inputs[inputIdx] ? inputs[inputIdx].value : ""); inputIdx++; }
-            }
-            return userCombined.trim() === possibleAns.trim();
-        });
-
-        if (isCorrect) {
-            const btn = document.getElementById('action-btn');
-            if (currentStep < stages.length) {
-                document.getElementById('msg').innerText = "נכון מאד!";
-                btn.innerText = "לשלב הבא";
-                btn.style.display = 'block';
-            } else {
-                isCodeSolved = true;
-                document.getElementById('msg').innerText = "פיצחתם את הקוד!";
-                btn.innerText = "קבלת האפיקומן 🎁";
-                btn.style.display = 'block';
-            }
-        }
-    }
-
-    function prepareNextLevel() {
-        const stage = stages[currentStep];
-        document.getElementById('d-left').style.backgroundImage = `url('${stage.nextL}')`;
-        document.getElementById('d-right').style.backgroundImage = `url('${stage.nextR}')`;
-        document.getElementById('scene').classList.remove('open');
-        document.getElementById('riddle-display').style.display = 'none';
-        setTimeout(() => {
-            currentStep++;
-            if (currentStep === stages.length) {
-                document.getElementById('key-img').style.display = 'block';
-                document.getElementById('action-btn').style.display = 'none';
-            } else {
-                document.getElementById('action-btn').innerText = "פתח את הכספת";
-                document.getElementById('action-btn').style.display = 'block';
-            }
-            isVaultOpen = false;
-        }, 1200);
-    }
-
-    function openFinalVault() {
-        document.getElementById('key-img').style.display = 'none';
-        document.getElementById('scene').classList.add('open');
-        document.getElementById('riddle-display').style.display = 'flex';
-        setupRiddle();
-    }
-
-    function showFinalPrize() {
-        document.getElementById('d-left').style.display = 'none';
-        document.getElementById('d-right').style.display = 'none';
-        document.getElementById('riddle-display').style.display = 'none';
-        document.getElementById('action-btn').style.display = 'none';
-        document.getElementById('final-prize').style.display = 'block';
-    }
-</script>
-
-</body>
-</html>
+    <h1 style="
