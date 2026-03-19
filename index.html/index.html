@@ -7,25 +7,13 @@
     <style>
         :root { --primary-red: #e94560; --success-green: #4eff4e; --dark-bg: #0a0a1a; }
         
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background-color: var(--dark-bg); 
-            color: white; 
-            margin: 0; 
-            overflow: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            height: 100dvh; /* גובה דינמי למובייל */
-            touch-action: manipulation; 
-        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark-bg); color: white; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; height: 100dvh; touch-action: manipulation; }
         
         .clinic-logo {
             position: absolute;
             top: 20px;
             left: 20px;
-            width: clamp(60px, 15vw, 130px);
+            width: clamp(70px, 12vw, 110px);
             z-index: 1000;
             border-radius: 12px;
             pointer-events: none;
@@ -33,11 +21,9 @@
 
         .vault-scene { 
             position: relative; 
-            width: 100%; /* חוזר ל-100% כדי שיראה טוב במחשב */
-            height: 100%; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100vw; 
+            height: 100vh; 
+            height: 100dvh;
             overflow: hidden; 
             background: #16213e; 
         }
@@ -50,7 +36,6 @@
             z-index: 2000; text-align: center; padding: 20px; box-sizing: border-box;
         }
         #intro-screen h1 { color: var(--success-green); font-size: clamp(24px, 6vw, 36px); margin-bottom: 20px; }
-        #intro-screen p { font-size: clamp(18px, 4vw, 22px); line-height: 1.6; max-width: 500px; margin-bottom: 30px; }
 
         .game-area { 
             position: absolute; 
@@ -66,51 +51,51 @@
             box-sizing: border-box; 
         }
 
-        .door { position: absolute; width: 50.5%; height: 100%; background-size: cover; background-position: center; transition: transform 1.2s ease-in-out; z-index: 10; }
-        .door-left { left: 0; background-image: url('כספתשמאל.png'); }
-        .door-right { right: 0; background-image: url('כספתימין.png'); }
+        /* --- התיקון לתמונות הכספת --- */
+        .door { 
+            position: absolute; 
+            width: 50%; 
+            height: 100%; 
+            /* contain מבטיח שכל התמונה תיכנס בלי להיחתך */
+            background-size: contain; 
+            background-repeat: no-repeat;
+            transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1); 
+            z-index: 10; 
+        }
+        .door-left { 
+            left: 0; 
+            background-image: url('כספתשמאל.png'); 
+            background-position: right center; /* מצמיד את חצי הכספת למרכז */
+        }
+        .door-right { 
+            right: 0; 
+            background-image: url('כספתימין.png'); 
+            background-position: left center; /* מצמיד את חצי הכספת למרכז */
+        }
+        /* --------------------------- */
+
         .open .door-left { transform: translateX(-100%); }
         .open .door-right { transform: translateX(100%); }
         
-        #key-img { position: absolute; width: clamp(80px, 25vw, 130px); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; cursor: pointer; display: none; filter: drop-shadow(0 0 15px gold); animation: float 2s infinite ease-in-out; }
+        #key-img { position: absolute; width: clamp(80px, 20vw, 130px); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; cursor: pointer; display: none; filter: drop-shadow(0 0 15px gold); animation: float 2s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translate(-50%, -55%); } 50% { transform: translate(-50%, -45%); } }
 
         #action-btn, .start-btn { 
-            z-index: 80; padding: 15px 35px; font-size: clamp(18px, 4vw, 24px); 
-            background: var(--primary-red); color: white; border: 2px solid rgba(255,255,255,0.3); 
+            z-index: 80; padding: 15px 35px; font-size: clamp(16px, 4vw, 22px); 
+            background: var(--primary-red); color: white; border: none; 
             border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        #action-btn { position: absolute; bottom: clamp(20px, 10vh, 50px); }
+        #action-btn { position: absolute; bottom: 10%; align-self: center; }
         
-        .riddle-text { font-size: clamp(16px, 4.5vw, 24px); padding: 0 15px; text-align: center; margin-bottom: 10px; font-weight: bold; width: 100%; max-width: 700px; }
-        
+        .riddle-text { font-size: clamp(16px, 4.5vw, 22px); padding: 0 15px; text-align: center; margin-bottom: 10px; font-weight: bold; }
         .inputs-container { display: flex; gap: clamp(4px, 1.5vw, 8px); margin: 10px 0; flex-wrap: wrap; justify-content: center; }
-        .letter-input { 
-            width: clamp(28px, 8vw, 45px); 
-            height: clamp(38px, 12vw, 55px); 
-            font-size: clamp(18px, 6vw, 28px); 
-            text-align: center; border: 2px solid var(--success-green); 
-            border-radius: 8px; background: #1a1a2e; color: white; font-weight: bold; 
-        }
+        .letter-input { width: clamp(28px, 8vw, 42px); height: clamp(38px, 12vw, 55px); font-size: clamp(18px, 6vw, 26px); text-align: center; border: 2px solid var(--success-green); border-radius: 8px; background: #1a1a2e; color: white; font-weight: bold; outline: none; }
         .space-box { width: 15px; }
 
-        .decoder-ring { 
-            display: none; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 5px; 
-            background: rgba(0, 0, 0, 0.8); 
-            padding: 15px; 
-            border-radius: 12px; 
-            border: 2px solid var(--success-green); 
-            width: 95%; 
-            max-width: 600px;
-            margin-top: 10px; 
-            overflow-y: auto; 
-            max-height: 35vh; 
-        }
-        .decoder-item { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: clamp(14px, 3.5vw, 20px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 4px 0; }
+        .decoder-ring { display: none; grid-template-columns: repeat(4, 1fr); gap: 5px; background: rgba(0, 0, 0, 0.85); padding: 10px; border-radius: 12px; border: 2px solid var(--success-green); width: 95%; margin-top: 10px; overflow-y: auto; max-height: 35vh; }
+        .decoder-item { font-size: clamp(13px, 3.5vw, 18px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 4px 0; text-align: center; }
 
-        .code-display { font-size: clamp(24px, 8vw, 45px); letter-spacing: 5px; margin: 10px 0; color: #fff; text-shadow: 0 0 10px var(--success-green); font-weight: bold; }
+        .code-display { font-size: clamp(24px, 8vw, 40px); letter-spacing: 5px; margin: 10px 0; color: #fff; text-shadow: 0 0 10px var(--success-green); font-weight: bold; }
         #final-prize { display: none; width: 100%; height: 100%; object-fit: contain; background: var(--dark-bg); position: absolute; top:0; left:0; z-index: 100; }
     </style>
 </head>
@@ -137,7 +122,7 @@
                 <div class="decoder-item">מ 🤓</div><div class="decoder-item">נ 🐹</div><div class="decoder-item">ס 🙈</div><div class="decoder-item">ע 🍭</div><div class="decoder-item">פ 🎮</div><div class="decoder-item">צ 🚀</div>
                 <div class="decoder-item">ק 🎈</div><div class="decoder-item">ר 🏀</div><div class="decoder-item">ש 😇</div><div class="decoder-item">ת 🙉</div><div class="decoder-item">ם 👀</div><div class="decoder-item">ן 🥑</div>
             </div>
-            <p id="msg" style="color: var(--success-green); margin-top: 5px; font-weight: bold; text-align: center; min-height: 24px;"></p>
+            <p id="msg" style="color: var(--success-green); margin-top: 10px; font-weight: bold; text-align: center; min-height: 20px;"></p>
         </div>
         <img src="אפיקומן.png" id="final-prize" alt="מצאתם את האפיקומן!">
     </div>
@@ -146,30 +131,22 @@
     <div class="door door-right" id="d-right"></div>
     
     <img src="מפתח.png" id="key-img" onclick="openFinalVault()">
-    <button id="action-btn" onclick="handleButtonClick()" style="display:none;">פתח את הכספת</button>
+    <button id="action-btn" onclick="handleButtonClick()">פתח את הכספת</button>
 </div>
 
 <script>
     const stages = [
-        { 
-            q: "בערב פסח, במרכז השולחן אני מונחת, יש עליי שישה מאכלים... מי אני?", 
-            a: ["קערת הסדר", "צלחת הסדר", "צלחת הפסח", "קערת הפסח"], 
-            nextL: "כספתשמאל.png", 
-            nextR: "כספתאדום.png" 
-        },
+        { q: "בערב פסח, במרכז השולחן אני מונחת, יש עליי שישה מאכלים... מי אני?", a: ["קערת הסדר", "צלחת הסדר", "צלחת הפסח", "קערת הפסח"], nextL: "כספתשמאל.png", nextR: "כספתאדום.png" },
         { q: "בכל ערב פסח, בכל בית ישראל מכינים לי כיסא, מוזגים לי כוס יין גדולה... מי אני?", a: ["אליהו הנביא"], nextL: "כספתשמאל.png", nextR: "כספתירוק.png" },
         { q: "אוכלים אותי בפסח, אני שטוחה, דקה ויבשה, ויש לי המון חורים קטנים... מי אני?", a: ["מצה"], nextL: "כספתכחול.png", nextR: "כספתירוק.png" },
-        { q: "דם, צפרדע, כינים, ערוב, דבר, שחין, ברד, ארבה, חשך ומכת בכורות... מי אנחנו?", a: ["עשר המכות"], nextL: "כספתכתום.png", nextR: "כספתירוק.png" }
+        { q: "היינו עשרה סימנים של כוח- דם, צפרדע, כינים, ערוב, דבר, שחין, ברד, ארבה, חשך ומכת בכורות- עד שעם ישראל יצא מעבדות ... מי אנחנו?", a: ["עשר המכות"], nextL: "כספתכתום.png", nextR: "כספתירוק.png" }
     ];
 
     let currentStep = 0;
     let isVaultOpen = false;
     let isCodeSolved = false;
 
-    function closeIntro() {
-        document.getElementById('intro-screen').style.display = 'none';
-        document.getElementById('action-btn').style.display = 'block';
-    }
+    function closeIntro() { document.getElementById('intro-screen').style.display = 'none'; }
 
     function handleButtonClick() {
         if (isCodeSolved) { showFinalPrize(); return; }
@@ -183,7 +160,7 @@
     }
 
     function setupRiddle() {
-        const stageData = (currentStep < stages.length) ? stages[currentStep] : { q: "פיצחתם הכל! עכשיו פתרו את כתב הסתרים:", a: ["אפיקומן"] };
+        const stageData = (currentStep < stages.length) ? stages[currentStep] : { q: "פיצחתם הכל! פתרו את כתב הסתרים:", a: ["אפיקומן"] };
         document.getElementById('riddle-q').innerText = stageData.q;
         document.getElementById('secret-code').style.display = (currentStep >= stages.length) ? 'block' : 'none';
         document.getElementById('decoder').style.display = (currentStep >= stages.length) ? 'grid' : 'none';
@@ -202,6 +179,7 @@
                 const input = document.createElement('input');
                 input.className = 'letter-input';
                 input.maxLength = 1;
+                input.setAttribute('autocomplete', 'off');
                 input.addEventListener('input', (e) => {
                     if (e.target.value) {
                         const all = container.querySelectorAll('.letter-input');
@@ -219,16 +197,11 @@
     function validateAnswer() {
         const inputs = document.querySelectorAll('.letter-input');
         const stageData = (currentStep < stages.length) ? stages[currentStep] : { a: ["אפיקומן"] };
-        
         const isCorrect = stageData.a.some(possibleAns => {
-            let userCombined = "";
-            let inputIdx = 0;
+            let userCombined = ""; let inputIdx = 0;
             for(let char of possibleAns) {
                 if(char === ' ') userCombined += ' ';
-                else { 
-                    userCombined += (inputs[inputIdx] ? inputs[inputIdx].value : ""); 
-                    inputIdx++; 
-                }
+                else { userCombined += (inputs[inputIdx] ? inputs[inputIdx].value : ""); inputIdx++; }
             }
             return userCombined.trim() === possibleAns.trim();
         });
@@ -250,9 +223,8 @@
 
     function prepareNextLevel() {
         const stage = stages[currentStep];
-        if(stage.nextL) document.getElementById('d-left').style.backgroundImage = `url('${stage.nextL}')`;
-        if(stage.nextR) document.getElementById('d-right').style.backgroundImage = `url('${stage.nextR}')`;
-        
+        document.getElementById('d-left').style.backgroundImage = `url('${stage.nextL}')`;
+        document.getElementById('d-right').style.backgroundImage = `url('${stage.nextR}')`;
         document.getElementById('scene').classList.remove('open');
         document.getElementById('riddle-display').style.display = 'none';
         setTimeout(() => {
@@ -276,9 +248,11 @@
     }
 
     function showFinalPrize() {
-        document.getElementById('final-prize').style.display = 'block';
+        document.getElementById('d-left').style.display = 'none';
+        document.getElementById('d-right').style.display = 'none';
         document.getElementById('riddle-display').style.display = 'none';
         document.getElementById('action-btn').style.display = 'none';
+        document.getElementById('final-prize').style.display = 'block';
     }
 </script>
 
